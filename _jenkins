@@ -1,16 +1,19 @@
 #compdef jenkins
 #autoload
 
+source ./common.zsh
 
 function _jenkins() {
 	local state
-	local -a _1st_arguments	
+	local -a _1st_arguments
 	local -a _2nd_arguments
 	local list_jobs_cmd
 	export ALL_JENKINS_JOBS=()
 
+	local jenkins_url=${JENKINS_URL}
+
 	if [[ -n "${JENKINS_CLI}" ]]; then
-		list_jobs_cmd="java -jar ${JENKINS_CLI} -noKeyAuth list-jobs"
+		list_jobs_cmd="java -jar ${JENKINS_CLI} -s ${jenkins_url} -noKeyAuth list-jobs"
 	else
 		list_jobs_cmd="echo"
 	fi
@@ -30,7 +33,7 @@ function _jenkins() {
 	  ':command:->command' \
 	  '*::options:->options' \
 	  ':job:(${ALL_JENKINS_JOBS})'
-	
+
 
 	case $state in
 #	(job)
@@ -44,4 +47,3 @@ function _jenkins() {
 }
 
 _jenkins "$@"
-
